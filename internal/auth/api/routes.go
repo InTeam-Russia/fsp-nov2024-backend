@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/InTeam-Russia/go-backend-template/internal/apierr"
 	"github.com/InTeam-Russia/go-backend-template/internal/auth/session"
@@ -105,6 +106,11 @@ func SetupRoutes(
 
 		u, err := userRepo.Create(&createUser)
 		if err != nil {
+			if strings.Contains(err.Error(), "duplicate key value violates unique constraint") {
+				c.JSON(http.StatusConflict, apierr.UserWithThisUsernameExists)
+				return
+			}
+
 			c.JSON(http.StatusInternalServerError, apierr.InternalServerError)
 			logger.Error(err.Error())
 			return

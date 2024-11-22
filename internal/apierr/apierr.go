@@ -35,3 +35,7 @@ var SessionNotFound = ApiError{
 var UserNotFound = ApiError{
 	Error: "USER_NOT_FOUND",
 }
+
+var UserWithThisUsernameExists = ApiError{
+	Error: "USER_WITH_THIS_USERNAME_EXISTS",
+}
