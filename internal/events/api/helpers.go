@@ -5,12 +5,12 @@ import (
 	"strconv"
 	"time"
 
-	models "github.com/InTeam-Russia/go-backend-template/internal/events/event"
+	"github.com/InTeam-Russia/go-backend-template/internal/events/event"
 )
 
-func BuildEventFilter(r *http.Request) (*models.EventFilter, error) {
+func BuildEventFilter(r *http.Request) (*event.EventFilter, error) {
 	query := r.URL.Query()
-	filter := &models.EventFilter{}
+	filter := &event.EventFilter{}
 
 	if sport := query.Get("sport"); sport != "" {
 		filter.Sport = &sport
