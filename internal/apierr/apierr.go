@@ -36,6 +36,18 @@ var UserNotFound = ApiError{
 	Error: "USER_NOT_FOUND",
 }
 
+var Unauthorized = ApiError{
+	Error: "UNAUTHORIZED",
+}
+
 var UserWithThisUsernameExists = ApiError{
 	Error: "USER_WITH_THIS_USERNAME_EXISTS",
+}
+
+var EventNotFound = ApiError{
+	Error: "EVENT_NOT_FOUND",
+}
+
+var InvalidQueryParams = ApiError{
+	Error: "INVALID_QUERY_PARAMS",
 }

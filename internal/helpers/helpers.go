@@ -3,6 +3,7 @@ package helpers
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/InTeam-Russia/go-backend-template/internal/config"
 	"github.com/gin-contrib/cors"
@@ -46,4 +47,17 @@ func CreateLogger(logLevel string) *zap.Logger {
 	}
 
 	return logger
+}
+
+func Contains(slice []string, value string) bool {
+	for _, item := range slice {
+		if strings.EqualFold(item, value) {
+			return true
+		}
+	}
+	return false
+}
+
+func StrPtr(s string) *string {
+	return &s
 }
