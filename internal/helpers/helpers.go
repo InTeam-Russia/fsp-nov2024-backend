@@ -12,7 +12,7 @@ import (
 
 func SetupCORS(r *gin.Engine, config *config.Config) {
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{config.AllowOrigin},
+		AllowOrigins:     config.AllowOrigin,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
