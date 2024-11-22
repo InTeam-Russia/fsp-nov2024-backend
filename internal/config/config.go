@@ -18,6 +18,8 @@ type Config struct {
 	AllowOrigin         []string
 	AdminUsername       string
 	AdminPassword       string
+	MockEvents          bool
+	MockFilters         bool
 }
 
 func LoadConfigFromEnv() (*Config, error) {
@@ -31,6 +33,16 @@ func LoadConfigFromEnv() (*Config, error) {
 		return nil, err
 	}
 
+	mockEvents, err := strconv.ParseBool(os.Getenv("MOCK_EVENTS"))
+	if err != nil {
+		return nil, err
+	}
+
+	mockFilters, err := strconv.ParseBool(os.Getenv("MOCK_FILTERS"))
+	if err != nil {
+		return nil, err
+	}
+
 	return &Config{
 		LogLevel:            os.Getenv("LOG_LEVEL"),
 		PostgresUrl:         os.Getenv("POSTGRES_URL"),
@@ -40,5 +52,7 @@ func LoadConfigFromEnv() (*Config, error) {
 		AllowOrigin:         strings.Split(os.Getenv("ALLOW_ORIGIN"), ","),
 		AdminUsername:       os.Getenv("ADMIN_USERNAME"),
 		AdminPassword:       os.Getenv("ADMIN_PASSWORD"),
+		MockEvents:          mockEvents,
+		MockFilters:         mockFilters,
 	}, nil
 }
