@@ -8,6 +8,8 @@ import (
 	"github.com/InTeam-Russia/go-backend-template/internal/config"
 	"github.com/InTeam-Russia/go-backend-template/internal/db"
 	"github.com/InTeam-Russia/go-backend-template/internal/events"
+
+	// "github.com/InTeam-Russia/go-backend-template/internal/filters"
 	"github.com/InTeam-Russia/go-backend-template/internal/helpers"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
@@ -49,9 +51,15 @@ func main() {
 	userRepo := auth.NewPgUserRepository(pgPool, logger)
 	sessionRepo := auth.NewRedisSessionRepository(redisClient, logger)
 	eventRepo := events.NewMockEventRepository()
+	// filterRepo := filters.NewMockFilterRepository()
 
 	auth.SetupRoutes(r, userRepo, sessionRepo, logger, cookieConfig)
 	events.SetupRoutes(r, logger, eventRepo)
+	// filters.SetupRoutes(r, logger, filterRepo)
 
-	r.Run()
+	err = r.Run()
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
 }
