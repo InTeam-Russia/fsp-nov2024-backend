@@ -10,6 +10,10 @@ import (
 
 func main() {
 	config, err := config.LoadConfigFromEnv()
+	if err != nil {
+		panic(err)
+	}
+
 	logger := helpers.CreateLogger(config.LogLevel)
 
 	pgPool, err := db.DropDb(config.PostgresUrl, os.Getenv("SQL_FILE"), logger)
