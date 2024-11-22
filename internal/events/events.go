@@ -9,3 +9,4 @@ type EventRepository = event.EventRepository
 
 var NewMockEventRepository = event.NewMockEventRepository
 var SetupRoutes = api.SetupRoutes
+var MockEvents = event.MockEvents
