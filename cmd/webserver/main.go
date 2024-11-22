@@ -8,6 +8,7 @@ import (
 	"github.com/InTeam-Russia/go-backend-template/internal/config"
 	"github.com/InTeam-Russia/go-backend-template/internal/db"
 	"github.com/InTeam-Russia/go-backend-template/internal/events"
+	"github.com/InTeam-Russia/go-backend-template/internal/filters/filter"
 
 	"github.com/InTeam-Russia/go-backend-template/internal/filters"
 	"github.com/InTeam-Russia/go-backend-template/internal/helpers"
@@ -50,8 +51,23 @@ func main() {
 
 	userRepo := auth.NewPgUserRepository(pgPool, logger)
 	sessionRepo := auth.NewRedisSessionRepository(redisClient, logger)
-	eventRepo := events.NewMockEventRepository()
-	filterRepo := filters.NewMockFilterRepository()
+
+	var eventRepo events.EventRepository
+	var filterRepo filter.FilterRepository
+
+	if config.MockEvents {
+		eventRepo = events.NewMockEventRepository()
+	} else {
+		logger.Error("Postgres events not implemented")
+		os.Exit(1)
+	}
+
+	if config.MockFilters {
+		filterRepo = filters.NewMockFilterRepository()
+	} else {
+		logger.Error("Postgres filters not implemented")
+		os.Exit(1)
+	}
 
 	auth.SetupRoutes(r, userRepo, sessionRepo, logger, cookieConfig)
 	events.SetupRoutes(r, logger, eventRepo)
