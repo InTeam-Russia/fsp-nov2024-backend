@@ -13,6 +13,8 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-debug}
       - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-123}
+      - MOCK_EVENTS=${MOCK_EVENTS:-false}
+      - MOCK_FILTERS=${MOCK_FILTERS:-false}
     depends_on:
       - db
       - dragonfly
@@ -30,6 +32,8 @@ services:
       - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-123}
       - SQL_FILE=/app/db/CreateTables.sql
+      - MOCK_EVENTS=${MOCK_EVENTS:-false}
+      - MOCK_FILTERS=${MOCK_FILTERS:-false}
     depends_on:
       - backend
 
@@ -46,6 +50,8 @@ services:
       - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-123}
       - SQL_FILE=/app/db/DropTables.sql
+      - MOCK_EVENTS=${MOCK_EVENTS:-false}
+      - MOCK_FILTERS=${MOCK_FILTERS:-false}
     depends_on:
       - backend
 
