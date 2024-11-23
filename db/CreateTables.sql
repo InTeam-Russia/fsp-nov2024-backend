@@ -48,6 +48,16 @@ CREATE TABLE cities (
     FOREIGN KEY (country) REFERENCES countries(country)
 );
 
+CREATE TABLE competition_types (
+    sport_name TEXT NOT NULL,
+    team_name TEXT NOT NULL,
+    name TEXT NOT NULL,
+
+    PRIMARY KEY (name, sport_name, team_name),
+    FOREIGN KEY (sport_name) REFERENCES sports(name),
+    FOREIGN KEY (sport_name, team_name) REFERENCES teams(sport_name, name)
+);
+
 CREATE TABLE competitions (
     ekp_id BIGINT PRIMARY KEY,
     members_count INT,
@@ -59,12 +69,15 @@ CREATE TABLE competitions (
     city TEXT NOT NULL,
     sport_name TEXT NOT NULL,
     team_name TEXT NOT NULL,
+    competition_type TEXT NOT NULL,
 
     FOREIGN KEY (country) REFERENCES countries(country),
     FOREIGN KEY (region) REFERENCES regions(region),
     FOREIGN KEY (city) REFERENCES cities(city),
     FOREIGN KEY (sport_name) REFERENCES sports(name),
-    FOREIGN KEY (sport_name, team_name) REFERENCES teams(sport_name, name)
+    FOREIGN KEY (sport_name, team_name) REFERENCES teams(sport_name, name),
+    FOREIGN KEY (sport_name, team_name, competition_type)
+        REFERENCES competition_types(sport_name, team_name, name)
 );
 
 CREATE TABLE competitions_programs_discipline (
@@ -83,16 +96,6 @@ CREATE TABLE competitions_gender_and_age_groups (
     PRIMARY KEY (gender_and_age_group_name, ekp_id),
     FOREIGN KEY (gender_and_age_group_name) REFERENCES gender_and_age_groups(name),
     FOREIGN KEY (ekp_id) REFERENCES competitions(ekp_id)
-);
-
-CREATE TABLE competition_types (
-    sport_name TEXT NOT NULL,
-    team_name TEXT NOT NULL,
-    name TEXT NOT NULL,
-
-    PRIMARY KEY (name, sport_name, team_name),
-    FOREIGN KEY (sport_name) REFERENCES sports(name),
-    FOREIGN KEY (sport_name, team_name) REFERENCES teams(sport_name, name)
 );
 
 CREATE TABLE teams_gender_and_age_groups (
