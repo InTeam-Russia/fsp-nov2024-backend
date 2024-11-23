@@ -45,6 +45,7 @@ func (r *PostgresEventRepository) GetEventsByFilter(filter *EventFilter) ([]Even
     city,
     sport_name,
     team_name,
+    competition_type,
     ARRAY_REMOVE(ARRAY_AGG(DISTINCT gender_and_age_groups.name), NULL) AS gender_and_age_groups,
     ARRAY_REMOVE(ARRAY_AGG(DISTINCT programs_disciplines.name), NULL) AS programs_disciplines
 	FROM competitions
@@ -72,6 +73,11 @@ func (r *PostgresEventRepository) GetEventsByFilter(filter *EventFilter) ([]Even
 	if filter.Team != nil {
 		query += fmt.Sprintf(" AND team_name = $%d", argIndex)
 		args = append(args, filter.Team)
+		argIndex++
+	}
+	if filter.CompetitionType != nil {
+		query += fmt.Sprintf(" AND competition_type = $%d", argIndex)
+		args = append(args, filter.CompetitionType)
 		argIndex++
 	}
 	if filter.Country != nil {
@@ -134,7 +140,7 @@ func (r *PostgresEventRepository) GetEventsByFilter(filter *EventFilter) ([]Even
 		if err := rows.Scan(
 			&event.EkpId, &event.MembersCount, &event.StartDate,
 			&event.EndDate, &event.Venue.Country, &event.Venue.Region,
-			&event.Venue.City, &event.Sport, &event.Team,
+			&event.Venue.City, &event.Sport, &event.Team, &event.CompetitionType,
 			&event.GenderAndAgeGroup, &event.ProgramDiscipline,
 		); err != nil {
 			r.logger.Error("Failed to scan row", zap.Error(err))
