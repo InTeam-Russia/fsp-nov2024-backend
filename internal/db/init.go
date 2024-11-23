@@ -52,6 +52,27 @@ func DropDb(dbUrl string, filePath string, logger *zap.Logger) (*pgxpool.Pool, e
 	return pool, err
 }
 
+func MockEventsDb(dbUrl string, filePath string, logger *zap.Logger) (*pgxpool.Pool, error) {
+	pool, err := CreatePool(dbUrl, logger)
+	if err != nil {
+		return nil, err
+	}
+
+	mockEventsSql, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = pool.Exec(context.Background(), string(mockEventsSql))
+	if err != nil {
+		return nil, err
+	}
+
+	logger.Info("Mock events inserted!")
+
+	return pool, err
+}
+
 func CreatePool(dbUrl string, logger *zap.Logger) (*pgxpool.Pool, error) {
 	poolConfig, err := pgxpool.ParseConfig(dbUrl)
 	if err != nil {
