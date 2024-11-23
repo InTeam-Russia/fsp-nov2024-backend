@@ -89,15 +89,15 @@ func (r *PostgresEventRepository) GetEventsByFilter(filter *EventFilter) ([]Even
 		args = append(args, filter.City)
 		argIndex++
 	}
-	if filter.StartDate != nil {
-		query += fmt.Sprintf(" AND start_date >= $%d", argIndex)
-		args = append(args, filter.StartDate)
-		argIndex++
+	if filter.StartDate != nil && filter.EndDate == nil {
+		filter.EndDate = filter.StartDate
+	} else if filter.EndDate != nil && filter.StartDate == nil {
+		filter.StartDate = filter.EndDate
 	}
-	if filter.EndDate != nil {
-		query += fmt.Sprintf(" AND end_date <= $%d", argIndex)
-		args = append(args, filter.EndDate)
-		argIndex++
+	if filter.StartDate != nil && filter.EndDate != nil {
+		query += fmt.Sprintf(" AND end_date >= $%d AND start_date <= $%d", argIndex, argIndex+1)
+		args = append(args, filter.StartDate, filter.EndDate)
+		argIndex += 2
 	}
 	if filter.MinMembersCount != nil {
 		query += fmt.Sprintf(" AND members_count >= $%d", argIndex)
