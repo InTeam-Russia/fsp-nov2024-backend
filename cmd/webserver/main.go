@@ -58,8 +58,7 @@ func main() {
 	if config.MockEvents {
 		eventRepo = events.NewMockEventRepository()
 	} else {
-		logger.Error("Postgres events not implemented")
-		os.Exit(1)
+		eventRepo = events.NewPgEventRepository(pgPool, logger)
 	}
 
 	if config.MockFilters {
