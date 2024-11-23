@@ -12,3 +12,5 @@ var SetupRoutes = api.SetupRoutes
 func NewMockFilterRepository() FilterRepository {
 	return &filter.MockFilterRepository{}
 }
+
+var NewPgFilterRepository = filter.NewPgFilterRepository

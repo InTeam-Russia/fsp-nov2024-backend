@@ -64,8 +64,7 @@ func main() {
 	if config.MockFilters {
 		filterRepo = filters.NewMockFilterRepository()
 	} else {
-		logger.Error("Postgres filters not implemented")
-		os.Exit(1)
+		filterRepo = filters.NewPgFilterRepository(pgPool, logger)
 	}
 
 	auth.SetupRoutes(r, userRepo, sessionRepo, logger, cookieConfig)
